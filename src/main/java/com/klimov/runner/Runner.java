@@ -17,13 +17,16 @@ import java.util.Comparator;
 public class Runner {
 
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException {
+
+
+
         ArrayList<Item> itemsList = new ArrayList<>();
-        itemsList.add(new Item("aaa", 3));
-        itemsList.add(new Item("bbb", 3));
-        itemsList.add(new Item("aaa", 1));
-        itemsList.add(new Item("bbb", 1));
-        itemsList.add(new Item("aaa", 2));
-        itemsList.add(new Item("bbb", 2));
+        itemsList.add(new Item("aaa", 3, false));
+        itemsList.add(new Item("bbb", 3, true));
+        itemsList.add(new Item("aaa", 1, false));
+        itemsList.add(new Item("bbb", 1, false));
+        itemsList.add(new Item("aaa", 2, true));
+        itemsList.add(new Item("bbb", 2, false));
 
         SAXParserFactory factory = SAXParserFactory.newInstance();
         SAXParser parser = factory.newSAXParser();

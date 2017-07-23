@@ -4,12 +4,18 @@ import com.klimov.entity.SortingRule;
 import com.klimov.entity.SortingType;
 
 import java.lang.reflect.Field;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class SortingRulesComparator<T> implements Comparator<T> {
     private List<SortingRule> sortingRules;
+
+    private Collection<Class> numericClasses = Arrays.asList(
+            byte.class, Byte.class,
+            short.class, Short.class,
+            int.class, Integer.class,
+            long.class, Long.class,
+            float.class, Float.class,
+            double.class, Double.class);
 
     public SortingRulesComparator(List<SortingRule> sortingRules) {
         this.sortingRules = sortingRules;
@@ -30,6 +36,7 @@ public class SortingRulesComparator<T> implements Comparator<T> {
             field = sortingRule.getField();
             sortingType = sortingRule.getSortingType();
             int quotient = defineQuotient(sortingType);
+
             try {
                 Field f = o1.getClass().getDeclaredField(field);
                 Class clazz = f.getType();
@@ -40,11 +47,19 @@ public class SortingRulesComparator<T> implements Comparator<T> {
                     if (!o1Value.equals(o2Value)) {
                         return quotient * o1Value.compareTo(o2Value);
                     }
-                } else if (clazz == Integer.class) {
-                    Integer o1Value = (Integer) f.get(o1);
-                    Integer o2Value = (Integer) f.get(o2);
+                } else if (numericClasses.contains(clazz)) {
+                    Double o1Value = new Double(f.get(o1).toString());
+                    Double o2Value = new Double(f.get(o2).toString());
                     if (!o1Value.equals(o2Value)) {
-                        return quotient * (o1Value - o2Value);
+                        int result = o1Value - o2Value > 0 ? 1 : -1;
+                        return quotient * (result);
+                    }
+                } else if (clazz == boolean.class || clazz == Boolean.class) {
+                    Boolean o1Value = (Boolean) f.get(o1);
+                    Boolean o2Value = (Boolean) f.get(o2);
+                    if (!o1Value.equals(o2Value)) {
+                        int result = o1Value ? 1 : -1;
+                        return quotient * (result);
                     }
                 }
             } catch (NoSuchFieldException | IllegalAccessException ignored) {

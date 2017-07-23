@@ -3,13 +3,15 @@ package com.klimov.entity;
 public class Item {
     private String name;
     private Integer price;
+    private boolean isBooked;
 
     public Item() {
     }
 
-    public Item(String name, int price) {
+    public Item(String name, Integer price, boolean isBooked) {
         this.name = name;
         this.price = price;
+        this.isBooked = isBooked;
     }
 
     public String getName() {
@@ -28,6 +30,10 @@ public class Item {
         this.price = price;
     }
 
+    public boolean isBooked() {
+        return isBooked;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -35,14 +41,22 @@ public class Item {
 
         Item item = (Item) o;
 
-        if (price != item.price) return false;
-        return name != null ? name.equals(item.name) : item.name == null;
+        if (isBooked != item.isBooked) return false;
+        if (name != null ? !name.equals(item.name) : item.name != null) return false;
+        return price != null ? price.equals(item.price) : item.price == null;
     }
 
     @Override
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + price;
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (isBooked ? 1 : 0);
         return result;
     }
+
+    public void setBooked(boolean booked) {
+        isBooked = booked;
+
+    }
+
 }
