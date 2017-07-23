@@ -47,9 +47,7 @@ public class SortingRulesComparator<T> implements Comparator<T> {
                         return quotient * (o1Value - o2Value);
                     }
                 }
-            } catch (NoSuchFieldException ignored) {
-            } catch (IllegalAccessException e) {
-                e.printStackTrace();
+            } catch (NoSuchFieldException | IllegalAccessException ignored) {
             }
         }
         return 0;

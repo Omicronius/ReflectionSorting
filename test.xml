@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <sorting-rules>
+    <field order="fake">fake</field>
     <field order="asc">name</field>
     <field order="desc">price</field>
 </sorting-rules>
